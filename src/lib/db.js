@@ -4,57 +4,57 @@ import { DB_URI } from "$env/static/private";
 const client = new MongoClient(DB_URI);
 
 await client.connect();
-const db = client.db("ScreenStackDB"); // select database
+const db = client.db("BookShelf"); // select database
 
 //////////////////////////////////////////
 // Movies
 //////////////////////////////////////////
 
-// Get all movies
-async function getMovies() {
-  let movies = [];
+// Get all books
+async function getBooks() {
+  let books = [];
   try {
-    const collection = db.collection("movies");
+    const collection = db.collection("books");
 
     // You can specify a query/filter here
     // See https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/query-document/
     const query = {};
 
     // Get all objects that match the query
-    movies = await collection.find(query).toArray();
-    movies.forEach((movie) => {
-      movie._id = movie._id.toString(); // convert ObjectId to String
+    books = await collection.find(query).toArray();
+    books.forEach((book) => {
+      book._id = book._id.toString(); // convert ObjectId to String
     });
   } catch (error) {
     console.log(error);
     // TODO: errorhandling
   }
-  return movies;
+  return books;
 }
 
-// Get movie by id
-async function getMovie(id) {
-  let movie = null;
+// Get book by id
+async function getBook(id) {
+  let book = null;
   try {
-    const collection = db.collection("movies");
+    const collection = db.collection("books");
     const query = { _id: new ObjectId(id) }; // filter by id
-    movie = await collection.findOne(query);
+    book = await collection.findOne(query);
 
-    if (!movie) {
-      console.log("No movie with id " + id);
+    if (!book) {
+      console.log("No book with id " + id);
       // TODO: errorhandling
     } else {
-      movie._id = movie._id.toString(); // convert ObjectId to String
+      book._id = book._id.toString(); // convert ObjectId to String
     }
   } catch (error) {
     // TODO: errorhandling
     console.log(error.message);
   }
-  return movie;
+  return book;
 }
 
-// create movie
-// Example movie object:
+// create book
+// Example book object:
 /* 
 { 
   title: "Das Geheimnis von Altura",
@@ -62,13 +62,13 @@ async function getMovie(id) {
   length: "120 Minuten"
 } 
 */
-async function createMovie(movie) {
-  movie.poster = "/images/placeholder.jpg"; // default poster
-  movie.actors = [];
-  movie.watchlist = false;
+async function createBook(book) {
+  book.poster = "/images/placeholder.jpg"; // default poster
+  book.actors = [];
+  book.read = false;
   try {
-    const collection = db.collection("movies");
-    const result = await collection.insertOne(movie);
+    const collection = db.collection("books");
+    const result = await collection.insertOne(book);
     return result.insertedId.toString(); // convert ObjectId to String
   } catch (error) {
     // TODO: errorhandling
@@ -77,8 +77,8 @@ async function createMovie(movie) {
   return null;
 }
 
-// update movie
-// Example movie object:
+// update book
+// Example book object:
 /* 
 { 
   _id: "6630e72c95e12055f661ff13",
@@ -94,20 +94,20 @@ async function createMovie(movie) {
   watchlist: false
 } 
 */
-// returns: id of the updated movie or null, if movie could not be updated
-async function updateMovie(movie) {
+// returns: id of the updated book or null, if book could not be updated
+async function updateBook(book) {
   try {
-    let id = movie._id;
-    delete movie._id; // delete the _id from the object, because the _id cannot be updated
-    const collection = db.collection("movies");
+    let id = book._id;
+    delete book._id; // delete the _id from the object, because the _id cannot be updated
+    const collection = db.collection("books");
     const query = { _id: new ObjectId(id) }; // filter by id
-    const result = await collection.updateOne(query, { $set: movie });
+    const result = await collection.updateOne(query, { $set: book });
 
     if (result.matchedCount === 0) {
-      console.log("No movie with id " + id);
+      console.log("No book with id " + id);
       // TODO: errorhandling
     } else {
-      console.log("Movie with id " + id + " has been updated.");
+      console.log("Book with id " + id + " has been updated.");
       return id;
     }
   } catch (error) {
@@ -117,18 +117,18 @@ async function updateMovie(movie) {
   return null;
 }
 
-// delete movie by id
-// returns: id of the deleted movie or null, if movie could not be deleted
-async function deleteMovie(id) {
+// delete book by id
+// returns: id of the deleted book or null, if book could not be deleted
+async function deleteBook(id) {
   try {
-    const collection = db.collection("movies");
+    const collection = db.collection("books");
     const query = { _id: new ObjectId(id) }; // filter by id
     const result = await collection.deleteOne(query);
 
     if (result.deletedCount === 0) {
-      console.log("No movie with id " + id);
+      console.log("No book with id " + id);
     } else {
-      console.log("Movie with id " + id + " has been successfully deleted.");
+      console.log("Book with id " + id + " has been successfully deleted.");
       return id;
     }
   } catch (error) {
@@ -140,9 +140,9 @@ async function deleteMovie(id) {
 
 // export all functions so that they can be used in other files
 export default {
-  getMovies,
-  getMovie,
-  createMovie,
-  updateMovie,
-  deleteMovie,
+  getBooks,
+  getBook,
+  createBook,
+  updateBook,
+  deleteBook,
 };

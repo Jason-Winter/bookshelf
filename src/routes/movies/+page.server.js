@@ -2,25 +2,25 @@ import db from "$lib/db.js";
 
 export async function load() {
   return {
-    movies: await db.getMovies()
+    books: await db.getBooks()
   };
 }
 
 export const actions = {
-  addToWatchlist: async ({ request }) => {
+  addToReadList: async ({ request }) => {
     let data = await request.formData();
-    let movie = {
+    let book = {
       _id: data.get("id"),
-      watchlist: true
+      read: true
     }
-    await db.updateMovie(movie)
+    await db.updateBook(book)
   },
-  removeFromWatchlist: async ({ request }) => {
+  removeFromReadList: async ({ request }) => {
     let data = await request.formData();
-    let movie = {
+    let book = {
       _id: data.get("id"),
-      watchlist: false
+      read: false
     }
-    await db.updateMovie(movie)
+    await db.updateBook(book)
   }
 }
