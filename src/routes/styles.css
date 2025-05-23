@@ -2,3 +2,6 @@ body {
     background-color: black;
     color: white;
 }
+.page-content {
+    margin-top: 100px; /* Gleicher Abstand wie in der Layout-Datei */
+  }

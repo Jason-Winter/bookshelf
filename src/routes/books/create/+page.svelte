@@ -2,6 +2,7 @@
   let { form } = $props();
 </script>
 
+<div class="page-content">
 <a href="/books">Back</a>
 <h1>Add a Book</h1>
 <form method="POST" action="?/create">
@@ -10,12 +11,12 @@
     <input name="name" class="form-control" type="text" />
   </div>
   <div class="mb-3">
-    <label for="" class="form-label">Year</label>
-    <input name="year" class="form-control" type="number" />
+    <label for="" class="form-label">Erscheinungsdatum</label>
+    <input name="erscheinungsdatum" class="form-control" type="date" />
   </div>
   <div class="mb-3">
-    <label for="" class="form-label">Length</label>
-    <input name="length" class="form-control" type="text" />
+    <label for="" class="form-label">Genre</label>
+    <input name="genre" class="form-control" type="text" />
   </div>
   <button type="submit" class="btn btn-primary">Add Book</button>
 </form>
@@ -23,3 +24,4 @@
 {#if form?.success}
   <p>Book created</p>
 {/if}
+</div>

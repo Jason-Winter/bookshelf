@@ -4,45 +4,58 @@
 </script>
 
 <div class="book-card">
-  <div>
-    <img class="img-fluid" src={book.cover} alt="" />
+<a href={`/books/${book._id}`}><img
+    class="img-fluid"
+    src={book.cover || '/img/platzhalter.png'}
+    alt={book.name || "Unbekanntes Buch"}
+  /></a>
+<div class="details">
+  <div class="title">
+    {book.name || "Unbekannter Titel"}
   </div>
-  <div class="details">
-    <div class="title">
-      <a href={"/books/" + book._id}>{book.name}</a>
-    </div>
-    <div>
-      Datum: {book.datum}
-    </div>
-    <div>
-      Genre: {book.genre}
-    </div>
-    {#if book.read}
-      <form method="POST" action="?/removeFromReadList" use:enhance>
-        <input type="hidden" name="id" value={book._id} />
-        <button class="btn btn-danger">Von Leseliste entfernen</button>
-      </form>
-    {/if}
-    {#if !book.read}
-      <form method="POST" action="?/addToReadList" use:enhance>
-        <input type="hidden" name="id" value={book._id} />
-        <button class="btn btn-success">Auf die Leseliste</button>
-      </form>
-    {/if}
+  <div>
+    von {book.autor || "Unbekannter Autor"}
+  </div>
+  <div>
+    {book.genre || "Unbekanntes Genre"}
   </div>
 </div>
+</div>
+
 
 <style>
   .book-card {
     border: 1px solid #555;
     height: 100%;
-    background-color: #444;
-    color: white;
+    background-color: white;
+    color: black;
+    position: relative;
+    overflow: hidden;
   }
+
   .details {
     padding: 0.5em;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
   }
+
+  .book-card:hover .details {
+    transform: translateY(0%);
+  }
+
   .title {
     font-weight: bold;
+  }
+
+  .img-fluid {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 </style>

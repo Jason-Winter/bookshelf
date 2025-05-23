@@ -63,7 +63,7 @@ async function getBook(id) {
 } 
 */
 async function createBook(book) {
-  book.poster = "/images/placeholder.jpg"; // default poster
+  book.poster = "/img/placeholder.jpg"; // default poster
   book.actors = [];
   book.read = false;
   try {
@@ -138,6 +138,40 @@ async function deleteBook(id) {
   return null;
 }
 
+async function getReadList() {
+  return books.filter(book => book.isFavorited === true); // Beispiel: Filtere Bücher mit `read: true`
+}
+
+
+async function getAverageRatingPerBook(buch_id) {
+  try {
+    const collection = db.collection("rezension");
+
+    // Aggregation, um den Durchschnitt für ein spezifisches Buch zu berechnen
+    const result = await collection.aggregate([
+      {
+        $match: { buch_id: buch_id } // Filtere nach der spezifischen Buch-ID (als String)
+      },
+      {
+        $group: {
+          _id: "$buch_id", // Gruppiere nach Buch-ID
+          averageRating: { $avg: "$bewertung" } // Berechne den Durchschnitt der Bewertungen
+        }
+      }
+    ]).toArray();
+
+    if (result.length > 0) {
+      return result[0].averageRating; // Rückgabe des berechneten Durchschnitts
+    } else {
+      console.log("Keine Bewertungen für dieses Buch gefunden.");
+      return null;
+    }
+  } catch (error) {
+    console.log("Fehler beim Berechnen des Durchschnitts: ", error.message);
+    return null;
+  }
+}
+
 // export all functions so that they can be used in other files
 export default {
   getBooks,
@@ -145,4 +179,6 @@ export default {
   createBook,
   updateBook,
   deleteBook,
+  getReadList,
+  getAverageRatingPerBook
 };
