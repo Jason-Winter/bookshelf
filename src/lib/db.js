@@ -1,5 +1,6 @@
 import { MongoClient, ObjectId } from "mongodb"; // See https://www.mongodb.com/docs/drivers/node/current/quick-start/
 import { DB_URI } from "$env/static/private";
+import { get } from "svelte/store";
 
 const client = new MongoClient(DB_URI);
 
@@ -138,8 +139,24 @@ async function deleteBook(id) {
   return null;
 }
 
-async function getReadList() {
-  return books.filter(book => book.isFavorited === true); // Beispiel: Filtere Bücher mit `read: true`
+
+async function getFavorite() {
+  try {
+    const collection = db.collection("books");
+
+    // Filtere Bücher, deren `isFavorited` auf `true` gesetzt ist
+    const books = await collection.find({ isFavorited: true }).toArray();
+
+    // Konvertiere die `_id`-Felder in Strings
+    books.forEach((book) => {
+      book._id = book._id.toString();
+    });
+
+    return books; // Rückgabe der gefilterten Bücher
+  } catch (error) {
+    console.log("Fehler beim Abrufen der Favoriten:", error.message);
+    return []; // Rückgabe einer leeren Liste im Fehlerfall
+  }
 }
 
 
@@ -172,6 +189,26 @@ async function getAverageRatingPerBook(buch_id) {
   }
 }
 
+
+async function getRezension(buch_id) {
+  try {
+    const collection = db.collection("rezension");
+
+    // Finde alle Rezensionen, die zur angegebenen Buch-ID gehören
+    const rezensionen = await collection.find({ buch_id: buch_id }).toArray();
+
+    // Optional: Konvertiere `_id`-Felder in Strings
+    rezensionen.forEach((rezension) => {
+      rezension._id = rezension._id.toString();
+    });
+
+    return rezensionen; // Rückgabe der Rezensionen
+  } catch (error) {
+    console.log("Fehler beim Abrufen der Rezensionen:", error.message);
+    return []; // Rückgabe einer leeren Liste im Fehlerfall
+  }
+}
+
 // export all functions so that they can be used in other files
 export default {
   getBooks,
@@ -179,6 +216,7 @@ export default {
   createBook,
   updateBook,
   deleteBook,
-  getReadList,
-  getAverageRatingPerBook
+  getFavorite,
+  getAverageRatingPerBook,
+  getRezension
 };

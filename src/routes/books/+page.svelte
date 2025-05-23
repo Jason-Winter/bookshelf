@@ -6,6 +6,7 @@
 </script>
 
 <div class="page-content">
+  <h1>Bücher</h1>
   <div>
   <a href="/books/create" class="btn-custom">Add New Book</a>
 </div>
@@ -23,31 +24,6 @@
 </div>
 
 <style>
-  .btn-custom {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #070707; /* Dunkles Blau */
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 25px; /* Abgerundete Ecken */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Schatten */
-    transition: all 0.3s ease; /* Weicher Übergang */
-    border: 3px solid #fafafa; /* Dunkles Blau */
-    margin-bottom: 1rem; /* Abstand nach unten */
-  }
+  
 
-  .btn-custom:hover {
-    background-color: #fcfdfd; /* Etwas dunkleres Blau beim Hover */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Stärkerer Schatten beim Hover */
-    transform: translateY(-2px); /* Leichtes Anheben beim Hover */
-    color: #070707;
-  }
-
-  .btn-custom:active {
-    background-color: #003f7f; /* Noch dunkler beim Klicken */
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Weniger Schatten beim Klicken */
-    transform: translateY(0); /* Zurücksetzen der Position */
-  }
 </style>

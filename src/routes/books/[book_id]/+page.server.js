@@ -3,11 +3,13 @@ import { redirect } from "@sveltejs/kit";
 
 export async function load({ params }) {
   const book = await db.getBook(params.book_id);
-  const averageRating = await db.getAverageRatingPerBook(book.buch_id); // Durchschnittsbewertung berechnen
+  const averageRating = await db.getAverageRatingPerBook(book.buch_id);
+  const rezensionen = await db.getRezension(book.buch_id); // Rezensionen abrufen
 
   return {
     book,
     averageRating, // Durchschnittsbewertung zurückgeben
+    rezensionen // Rezensionen zurückgeben
   };
 }
 
@@ -19,7 +21,7 @@ export const actions = {
     redirect(303, "/books");
   },
 
-  addToReadList: async ({ request }) => {
+  addFavorite: async ({ request }) => {
     let data = await request.formData();
     let book = {
       _id: data.get("id"),
@@ -27,7 +29,7 @@ export const actions = {
     }
     await db.updateBook(book)
   },
-  removeFromReadList: async ({ request }) => {
+  removeFavorite: async ({ request }) => {
     let data = await request.formData();
     let book = {
       _id: data.get("id"),

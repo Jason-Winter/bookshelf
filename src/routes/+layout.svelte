@@ -128,4 +128,5 @@
     .search-button:hover .search-icon {
         filter: brightness(1.2); /* Hellerer Effekt beim Hover */
     }
+
 </style>

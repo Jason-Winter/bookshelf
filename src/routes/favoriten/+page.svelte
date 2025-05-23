@@ -2,31 +2,25 @@
   import BookCard from "$lib/components/BookCard.svelte";
   let { data } = $props();
 
-    let filterByReadList = $state(false);
+   let showFavorite = data.showFavorite;
 
-  let books = $derived.by(() => {
-    if (filterByReadList) {
-      let booksFiltered = data.books.filter(
-        (book) => book.isFavorited === true,
-      );
-      return booksFiltered;
-    }
-    return data.books;
-  });
 </script>
 
-<h1>Favoriten</h1>
+<div class="page-content">
+  <h1>Favoriten</h1>
 
-<div class="book-list">
-  {#each readList as book}
-    <BookCard {book} />
-  {/each}
+  <div class="book-list">
+    {#each showFavorite as book}
+      <BookCard {book} />
+    {/each}
+  </div>
 </div>
 
 <style>
   .book-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1rem;
+    margin-top: 1rem;
   }
 </style>
