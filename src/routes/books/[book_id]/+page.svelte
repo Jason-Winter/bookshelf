@@ -79,7 +79,7 @@
       </div>
     </div>
   </div>
-</div>
+
 
 
   <h2 class="rezension-title">Rezensionen</h2>
@@ -113,6 +113,8 @@
   {:else}
     <p>Keine Rezensionen vorhanden.</p>
   {/if}
+  <a href={`/books/${details[0]._id}/createRezension`} class="btn-custom">Rezension hinzufügen</a>
+</div>
 
 <style>
 

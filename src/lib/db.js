@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from "mongodb"; // See https://www.mongodb.com/docs/drivers/node/current/quick-start/
 import { DB_URI } from "$env/static/private";
 import { get } from "svelte/store";
+import { v4 as uuidv4 } from "uuid";
 
 const client = new MongoClient(DB_URI);
 
@@ -66,8 +67,9 @@ function formatDate(dateString) {
 async function createBook(book) {
   book.cover = "/img/platzhalter.png"; // default cover
   book.isFavorited = false;
+  book.buch_id = uuidv4(); // generate a unique book id
 
-    // Datum formatieren, falls vorhanden
+  // Datum formatieren, falls vorhanden
   if (book.datum) {
     book.datum = formatDate(book.datum);
   }
@@ -198,6 +200,59 @@ async function getRezensionen(buch_id) {
 }
 
 
+async function getAllRezensionen() {
+  let rezensionen = [];
+  try {
+    const collection = db.collection("rezension");
+
+    const query = [
+      {
+        '$lookup': {
+          'from': 'books',
+          'localField': 'buch_id',
+          'foreignField': 'buch_id',
+          'as': 'book'
+        }
+      }, {
+        '$unwind': {
+          'path': '$book'
+        }
+      }
+    ];
+
+    // Get all objects that match the query
+    rezensionen = await collection.aggregate(query).toArray();
+  } catch (error) {
+    console.log(error);
+    // TODO: errorhandling
+  }
+
+  // Parses all ObjectIds (even in nested objects such as vehicle/user to string)
+  return JSON.parse(JSON.stringify(rezensionen));
+}
+
+
+
+async function createRezension(rezension) {
+  rezension.rezension_id = uuidv4();
+  rezension.benutzer_id = "6e9b8124-34f2-4f39-8a6f-9151e3a4912c";
+
+  // Bewertung in einen Float umwandeln
+  if (rezension.bewertung) {
+    rezension.bewertung = parseFloat(rezension.bewertung);
+  }
+  try {
+    const collection = db.collection("rezension");
+    const result = await collection.insertOne(rezension);
+    return result.insertedId.toString(); // convert ObjectId to String
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
+
 async function getAllDetails(buch_id) {
   let details = [];
   try {
@@ -241,37 +296,74 @@ async function getAllDetails(buch_id) {
 }
 
 
-
-async function getAllRezensionen() {
-  let rezensionen = [];
+async function getReadinglist(id) {
+  let readingList = null;
   try {
-    const collection = db.collection("rezension");
+    const collection = db.collection("leseliste");
+    const query = { _id: new ObjectId(id) }; // filter by id
+    readingList = await collection.findOne(query);
+
+    if (!readingList) {
+      console.log("No reading list with id " + id);
+      // TODO: errorhandling
+    } else {
+      readingList._id = readingList._id.toString(); // convert ObjectId to String
+    }
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return readingList;
+}
+
+
+async function getAllReadinglists() {
+  let readingLists = [];
+  try {
+    const collection = db.collection("leseliste");
 
     const query = [
       {
         '$lookup': {
-          'from': 'books',
-          'localField': 'buch_id',
-          'foreignField': 'buch_id',
-          'as': 'book'
+          'from': 'benutzer',
+          'localField': 'benutzer_id',
+          'foreignField': 'benutzer_id',
+          'as': 'benutzer'
         }
       }, {
         '$unwind': {
-          'path': '$book'
+          'path': '$benutzer'
         }
       }
     ];
 
     // Get all objects that match the query
-    rezensionen = await collection.aggregate(query).toArray();
+    readingLists = await collection.aggregate(query).toArray();
   } catch (error) {
     console.log(error);
     // TODO: errorhandling
   }
 
   // Parses all ObjectIds (even in nested objects such as vehicle/user to string)
-  return JSON.parse(JSON.stringify(rezensionen));
+  return JSON.parse(JSON.stringify(readingLists));
 }
+
+
+async function createReadingList(readingList) {
+  readingList.benutzer_id = "6e9b8124-34f2-4f39-8a6f-9151e3a4912c";
+  readingList.liste_id = uuidv4(); // generate a unique reading list id
+
+  try {
+    const collection = db.collection("leseliste");
+    const result = await collection.insertOne(readingList);
+    return result.insertedId.toString(); // convert ObjectId to String
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return null;
+}
+
 
 // export all functions so that they can be used in other files
 export default {
@@ -284,5 +376,9 @@ export default {
   getAverageRatingPerBook,
   getRezensionen,
   getAllRezensionen,
-  getAllDetails
+  getAllDetails,
+  createRezension,
+  createReadingList,
+  getReadinglist,
+  getAllReadinglists
 };

@@ -36,8 +36,10 @@
                     <a class="nav-link" href="/favoriten">Favoriten</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/rezensionen">Rezensionen</a
-                    >
+                    <a class="nav-link" href="/rezensionen">Rezensionen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/readinglists">Leselisten</a>
                 </li>
             </ul>
             <!-- Left links -->
