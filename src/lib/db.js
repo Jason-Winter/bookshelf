@@ -178,7 +178,7 @@ async function getAverageRatingPerBook(buch_id) {
     ]).toArray();
 
     if (result.length > 0) {
-      return result[0].averageRating; // Rückgabe des berechneten Durchschnitts
+      return parseFloat(result[0].averageRating.toFixed(1));
     } else {
       console.log("Keine Bewertungen für dieses Buch gefunden.");
       return null;
@@ -190,7 +190,7 @@ async function getAverageRatingPerBook(buch_id) {
 }
 
 
-async function getRezension(buch_id) {
+async function getRezensionen(buch_id) {
   try {
     const collection = db.collection("rezension");
 
@@ -209,6 +209,27 @@ async function getRezension(buch_id) {
   }
 }
 
+/* async function getUser(benutzer_id) {
+  let user = null;
+  try {
+    const collection = db.collection("benutzer");
+    const query = { _id: new ObjectId(benutzer_id) }; // filter by id
+    user = await collection.findOne(query);
+
+    if (!user) {
+      console.log("No user with id " + benutzer_id);
+      // TODO: errorhandling
+    } else {
+      user._id = user._id.toString(); // convert ObjectId to String
+    }
+  } catch (error) {
+    // TODO: errorhandling
+    console.log(error.message);
+  }
+  return user;
+} */
+
+
 // export all functions so that they can be used in other files
 export default {
   getBooks,
@@ -218,5 +239,6 @@ export default {
   deleteBook,
   getFavorite,
   getAverageRatingPerBook,
-  getRezension
+  getRezensionen, 
+  getUser
 };
