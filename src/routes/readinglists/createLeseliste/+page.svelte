@@ -9,7 +9,9 @@
     } else {
       selectedBooks = [...selectedBooks, buch_id]; // Hinzufügen, wenn nicht ausgewählt
     }
+
   }
+
 </script>
 
 <div class="page-content">
@@ -39,7 +41,7 @@
           </div>
         {/each}
       </div>
-      <input type="hidden" name="buecher" value={JSON.stringify(selectedBooks)} />
+      <input type="hidden" name="buecher" bind:this={hiddenInput} />
     </div>
   <button type="submit" class="btn-custom">Leseliste hinzufügen</button>
 </form>
