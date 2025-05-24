@@ -36,7 +36,7 @@
                     <a class="nav-link" href="/favoriten">Favoriten</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/rezensionen">Meine Rezensionen</a
+                    <a class="nav-link" href="/rezensionen">Rezensionen</a
                     >
                 </li>
             </ul>

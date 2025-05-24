@@ -4,12 +4,12 @@ import { redirect } from "@sveltejs/kit";
 export async function load({ params }) {
   const book = await db.getBook(params.book_id);
   const averageRating = await db.getAverageRatingPerBook(book.buch_id);
-  const rezensionen = await db.getRezension(book.buch_id); // Rezensionen abrufen
+  const details = await db.getAllDetails(book.buch_id); // Alle Details abrufen
 
   return {
     book,
     averageRating, // Durchschnittsbewertung zurückgeben
-    rezensionen // Rezensionen zurückgeben
+    details // Benutzerinformationen zurückgeben
   };
 }
 

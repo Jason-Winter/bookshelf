@@ -1,24 +1,28 @@
 <script>
+    import { json } from '@sveltejs/kit';
+
   let { data } = $props();
   let book = data.book;
   let averageRating = data.averageRating;
   let rezensionen = data.rezensionen;
+  let details = data.details;
+  /*let user = data.benutzer;*/
 
 </script>
 
 <div class="page-content">
-  <button class="btn-custom"><a href="/books">Back</a></button>
+  <button class="btn-custom"><a href="/books">Zurück</a></button>
   <div class="detail-container">
     <div class="buch-cover">
       <img
-        src={book.cover || "/img/platzhalter.png"}
-        alt="Cover von {book.name}"
+        src={details[0].cover || "/img/platzhalter.png"}
+        alt="Cover von {details[0].name}"
         class="buch-cover-img"
       />
     </div>
     <div class="buch-details">
       <h1 class="buch-title">
-        {book.name} <span class="buch-jahr"></span>
+        {details[0].name} <span class="buch-jahr"></span>
       </h1>
 
       <!-- User Score und Favoriten-Button nebeneinander -->
@@ -26,9 +30,9 @@
         <div class="user-score">{averageRating}</div>
         <p class="user-score-label">Benutzer Bewertung</p>
 
-        {#if book.isFavorited}
+        {#if details[0].isFavorited}
           <form method="POST" action="?/removeFavorite" use:enhance>
-            <input type="hidden" name="id" value={book._id} />
+            <input type="hidden" name="id" value={details[0]._id} />
             <button class="favorite-icon-button"
               ><img
                 src="/icons/favorite.svg"
@@ -38,9 +42,9 @@
             >
           </form>
         {/if}
-        {#if !book.isFavorited}
+        {#if !details[0].isFavorited}
           <form method="POST" action="?/addFavorite" use:enhance>
-            <input type="hidden" name="id" value={book._id} />
+            <input type="hidden" name="id" value={details[0]._id} />
             <button class="favorite-icon-button"
               ><img
                 src="/icons/favorite_border.svg"
@@ -53,24 +57,24 @@
       </div>
 
       <p class="buch-beschreibung">
-        {book.beschreibung || "Beschreibung nicht vorhanden"}
+        {details[0].beschreibung || "Beschreibung nicht vorhanden"}
       </p>
 
       <!-- Autor und Erscheinungsdatum -->
       <div class="buch-meta">
         <div>
           <p class="meta-label">Autor</p>
-          <p class="meta-value">{book.autor || "Autor unbekannt"}</p>
+          <p class="meta-value">{details[0].autor || "Autor unbekannt"}</p>
         </div>
         <div>
           <p class="meta-label">Erscheinungsdatum</p>
           <p class="meta-value">
-            {book.datum || "Erscheinungsdatum unbekannt"}
+            {details[0].datum || "Erscheinungsdatum unbekannt"}
           </p>
         </div>
         <form method="POST" action="?/delete" class="delete-button-container">
-          <input type="hidden" name="id" value={book._id} />
-          <button class="btn-custom">Delete Book</button>
+          <input type="hidden" name="id" value={details[0]._id} />
+          <button class="btn-custom">Buch löschen</button>
         </form>
       </div>
     </div>
@@ -79,19 +83,19 @@
 
 
   <h2 class="rezension-title">Rezensionen</h2>
-  {#if rezensionen.length > 0}
+  {#if details[0].rezension.length > 0}
     <div class="rezensionen-container">
-      {#each rezensionen as rez, index}
+      {#each details[0].rezension as rez, index}
         <div class="rezension {index > 0 ? 'mit-trennlinie' : ''}">
           <div class="rezension-header">
             <img
-              src={rez.autor?.profilbild || "/img/default-avatar.png"}
-              alt="Profilbild von {rez.autor?.name || 'Unbekannt'}"
+              src={rez.benutzer[0]?.profilbild || "/img/default-avatar.png"}
+              alt="Profilbild von {rez.benutzer[0]?.name || 'Unbekannt'}"
               class="profilbild"
             />
             <div>
               <p class="rezension-autor">
-                Rezension von {rez.autor?.name || "Unbekannt"}
+                Rezension von {rez.benutzer[0]?.name || "Unbekannt"}
               </p>
               <p class="rezension-bewertung">
                 {#each Array(rez.bewertung).fill(0) as _}
@@ -111,13 +115,7 @@
   {/if}
 
 <style>
-  .btn-custom a {
-    color: #fff; /* Ändere die Farbe des Links */
-    text-decoration: none; /* Entferne die Unterstreichung */
-  }
-  .btn-custom a:hover {
-    color: black; /* Farbe beim Hover-Effekt */
-  }
+
   .detail-container {
     display: flex;
     gap: 2rem;

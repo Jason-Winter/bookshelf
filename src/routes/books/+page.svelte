@@ -8,7 +8,7 @@
 <div class="page-content">
   <h1>Bücher</h1>
   <div>
-  <a href="/books/create" class="btn-custom">Add New Book</a>
+  <a href="/books/create" class="btn-custom">Buch hinzufügen</a>
 </div>
 <p><i>Daten und Bilder generiert mit ChatGPT und DALL-E</i></p>
 

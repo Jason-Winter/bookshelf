@@ -49,3 +49,10 @@ body {
     transform: translateY(0);
     /* Zurücksetzen der Position */
 }
+  .btn-custom a {
+    color: #fff; /* Ändere die Farbe des Links */
+    text-decoration: none; /* Entferne die Unterstreichung */
+  }
+  .btn-custom a:hover {
+    color: black; /* Farbe beim Hover-Effekt */
+  }

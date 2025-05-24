@@ -54,19 +54,23 @@ async function getBook(id) {
   return book;
 }
 
-// create book
-// Example book object:
-/* 
-{ 
-  title: "Das Geheimnis von Altura",
-  year: 2024,
-  length: "120 Minuten"
-} 
-*/
+// Funktion zum Formatieren des Datums
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Monate sind 0-basiert
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
 async function createBook(book) {
-  book.poster = "/img/placeholder.jpg"; // default poster
-  book.actors = [];
-  book.read = false;
+  book.cover = "/img/platzhalter.png"; // default cover
+  book.isFavorited = false;
+
+    // Datum formatieren, falls vorhanden
+  if (book.datum) {
+    book.datum = formatDate(book.datum);
+  }
   try {
     const collection = db.collection("books");
     const result = await collection.insertOne(book);
@@ -78,23 +82,7 @@ async function createBook(book) {
   return null;
 }
 
-// update book
-// Example book object:
-/* 
-{ 
-  _id: "6630e72c95e12055f661ff13",
-  title: "Das Geheimnis von Altura",
-  year: 2024,
-  length: "120 Minuten",
-  actors: [
-    "Lena Herzog",
-    "Maximilian Schröder",
-    "Sophia Neumann"
-  ],
-  poster: "/images/Altura.png",
-  watchlist: false
-} 
-*/
+
 // returns: id of the updated book or null, if book could not be updated
 async function updateBook(book) {
   try {
@@ -195,7 +183,7 @@ async function getRezensionen(buch_id) {
     const collection = db.collection("rezension");
 
     // Finde alle Rezensionen, die zur angegebenen Buch-ID gehören
-    const rezensionen = await collection.find({ buch_id: buch_id }).toArray();
+    const rezensionen = await collection.aggregate({ buch_id: buch_id }).toArray();
 
     // Optional: Konvertiere `_id`-Felder in Strings
     rezensionen.forEach((rezension) => {
@@ -209,26 +197,81 @@ async function getRezensionen(buch_id) {
   }
 }
 
-/* async function getUser(benutzer_id) {
-  let user = null;
+
+async function getAllDetails(buch_id) {
+  let details = [];
   try {
-    const collection = db.collection("benutzer");
-    const query = { _id: new ObjectId(benutzer_id) }; // filter by id
-    user = await collection.findOne(query);
+    const collection = db.collection("books");
 
-    if (!user) {
-      console.log("No user with id " + benutzer_id);
-      // TODO: errorhandling
-    } else {
-      user._id = user._id.toString(); // convert ObjectId to String
-    }
+    const query = [
+      {
+        "$match": {
+          "buch_id": buch_id
+        }
+      },
+      {
+        '$lookup': {
+          'from': 'rezension',
+          'localField': 'buch_id',
+          'foreignField': 'buch_id',
+          'pipeline': [
+            {
+              '$lookup': {
+                'from': 'benutzer',
+                'localField': 'benutzer_id',
+                'foreignField': 'benutzer_id',
+                'as': 'benutzer'
+              }
+            }
+          ],
+          'as': 'rezension'
+        }
+      }
+    ];
+
+    // Get all objects that match the query
+    details = await collection.aggregate(query).toArray();
   } catch (error) {
+    console.log(error);
     // TODO: errorhandling
-    console.log(error.message);
   }
-  return user;
-} */
 
+  // Parses all ObjectIds (even in nested objects such as vehicle/user to string)
+  return JSON.parse(JSON.stringify(details));
+}
+
+
+
+async function getAllRezensionen() {
+  let rezensionen = [];
+  try {
+    const collection = db.collection("rezension");
+
+    const query = [
+      {
+        '$lookup': {
+          'from': 'books',
+          'localField': 'buch_id',
+          'foreignField': 'buch_id',
+          'as': 'book'
+        }
+      }, {
+        '$unwind': {
+          'path': '$book'
+        }
+      }
+    ];
+
+    // Get all objects that match the query
+    rezensionen = await collection.aggregate(query).toArray();
+  } catch (error) {
+    console.log(error);
+    // TODO: errorhandling
+  }
+
+  // Parses all ObjectIds (even in nested objects such as vehicle/user to string)
+  return JSON.parse(JSON.stringify(rezensionen));
+}
 
 // export all functions so that they can be used in other files
 export default {
@@ -239,6 +282,7 @@ export default {
   deleteBook,
   getFavorite,
   getAverageRatingPerBook,
-  getRezensionen, 
-  getUser
+  getRezensionen,
+  getAllRezensionen,
+  getAllDetails
 };

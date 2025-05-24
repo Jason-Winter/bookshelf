@@ -5,8 +5,10 @@ export const actions = {
     const data = await request.formData();
     let book = {
       name: data.get("name"),
-      erscheinungsdatum: data.get("erscheinungsdatum"),
+      datum: data.get("datum"),
       genre: data.get("genre"),
+      autor: data.get("autor"),
+      beschreibung: data.get("beschreibung"),
     };
     await db.createBook(book);
     return { success: true };
