@@ -1,5 +1,5 @@
 <script>
-    import { json } from '@sveltejs/kit';
+  import { json } from "@sveltejs/kit";
 
   let { data } = $props();
   let book = data.book;
@@ -7,7 +7,6 @@
   let rezensionen = data.rezensionen;
   let details = data.details;
   /*let user = data.benutzer;*/
-
 </script>
 
 <div class="page-content">
@@ -76,11 +75,56 @@
           <input type="hidden" name="id" value={details[0]._id} />
           <button class="btn-custom">Buch löschen</button>
         </form>
+        <button
+          type="button"
+          class="btn-custom"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteModal"
+        >
+          Buch löschen
+        </button>
       </div>
     </div>
   </div>
 
-
+  <!-- Modal -->
+  <div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Buch löschen</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Bist du sicher, dass du dieses Buch löschen möchtest?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn-custom"
+          data-bs-dismiss="modal"
+        >
+          Abbrechen
+        </button>
+        <form method="POST" action="?/delete">
+          <input type="hidden" name="id" value={details[0]._id} />
+          <button type="submit" class="btn-custom">Buch löschen</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
   <h2 class="rezension-title">Rezensionen</h2>
   {#if details[0].rezension.length > 0}
@@ -113,11 +157,12 @@
   {:else}
     <p>Keine Rezensionen vorhanden.</p>
   {/if}
-  <a href={`/books/${details[0]._id}/createRezension`} class="btn-custom">Rezension hinzufügen</a>
+  <a href={`/books/${details[0]._id}/createRezension`} class="btn-custom"
+    >Rezension hinzufügen</a
+  >
 </div>
 
 <style>
-
   .detail-container {
     display: flex;
     gap: 2rem;
@@ -230,7 +275,7 @@
     bottom: 0; /* Positioniere den Button unten */
   }
 
-    .rezension-title {
+  .rezension-title {
     margin-top: 3rem;
   }
   .rezensionen-container {
@@ -285,5 +330,29 @@
     margin: 1rem 0;
     line-height: 1.6;
   }
+
+
+  .modal-dialog{
+    background-color: black;
+    color: white;
+  }
+
+    .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .modal-body p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
 
 </style>

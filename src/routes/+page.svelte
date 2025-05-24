@@ -1,2 +1,5 @@
-<h1>Welcome to ScreenStack</h1>
-<p>Your tracker and search engine for movies and tv shows</p>
+<div class="page-content">
+<h1>Willkommen bei BookShelf</h1>
+<p>Ihr Tracker und Ihre Suchmaschine für Bücher</p>
+
+</div>

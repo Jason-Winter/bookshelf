@@ -1,6 +1,7 @@
 <script>
-  import "./styles.css";
-  let { children } = $props();
+    import "./styles.css";
+    import { page } from "$app/stores";
+    let { children } = $props();
 </script>
 
 <!-- Navbar -->
@@ -8,7 +9,7 @@
     <!-- Container wrapper -->
     <div class="container-fluid">
         <!-- Navbar brand -->
-        <a class="navbar-brand" href="http://localhost:5173/">
+        <a class="navbar-brand" href="/">
             <img src="/BookShelf.svg" height="40" alt="" loading="lazy" />
         </a>
 
@@ -17,8 +18,8 @@
             class="navbar-toggler"
             type="button"
             data-mdb-collapse-init
-            data-mdb-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
+            data-mdb-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
             aria-expanded="false"
             aria-label="Toggle navigation"
         >
@@ -26,20 +27,20 @@
         </button>
 
         <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/books">Bücher</a>
+                    <a class="nav-link {$page.url.pathname.startsWith('/books') ? 'active' : ''}" href="/books"> Bücher </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/favoriten">Favoriten</a>
+                    <a class="nav-link {$page.url.pathname.startsWith('/favoriten',)  ? 'active' : ''}" href="/favoriten"> Favoriten </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/rezensionen">Rezensionen</a>
+                    <a class="nav-link {$page.url.pathname.startsWith('/rezensionen',)  ? 'active' : ''}" href="/rezensionen"> Rezensionen </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/readinglists">Leselisten</a>
+                    <a class="nav-link {$page.url.pathname.startsWith('/readinglists',)  ? 'active' : ''}" href="/readinglists"> Leselisten </a>
                 </li>
             </ul>
             <!-- Left links -->
@@ -71,14 +72,14 @@
 </nav>
 
 <div class="container mt-3">
-  {@render children()}
+    {@render children()}
 </div>
 
 <style>
-  .navbar {
+    .navbar {
         z-index: 1030; /* Standardwert für Bootstrap */
     }
-  .container {
+    .container {
         margin-top: 70px;
         position: relative; /* Höhe der Navbar (anpassen, falls nötig) */
     }
@@ -131,4 +132,11 @@
         filter: brightness(1.2); /* Hellerer Effekt beim Hover */
     }
 
+    .nav-link.active {
+        background-color: black; 
+        color: white; 
+        border-radius: 50px; 
+        font-weight: bold; 
+        padding: 8px 12px; 
+    }
 </style>
