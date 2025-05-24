@@ -1,73 +1,49 @@
 <script>
     import "./styles.css";
     import { page } from "$app/stores";
+    
     let { children } = $props();
 </script>
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-    <!-- Container wrapper -->
     <div class="container-fluid">
-        <!-- Navbar brand -->
         <a class="navbar-brand" href="/">
             <img src="/BookShelf.svg" height="40" alt="" loading="lazy" />
         </a>
 
-        <!-- Toggle button -->
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-mdb-collapse-init
-            data-mdb-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
 
-        <!-- Collapsible wrapper -->
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link {$page.url.pathname.startsWith('/books') ? 'active' : ''}" href="/books"> Bücher </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {$page.url.pathname.startsWith('/favoriten',)  ? 'active' : ''}" href="/favoriten"> Favoriten </a>
+                    <a class="nav-link {$page.url.pathname.startsWith('/favoriten') ? 'active' : ''}" href="/favoriten"> Favoriten </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {$page.url.pathname.startsWith('/rezensionen',)  ? 'active' : ''}" href="/rezensionen"> Rezensionen </a>
+                    <a class="nav-link {$page.url.pathname.startsWith('/readinglists') ? 'active' : ''}" href="/readinglists"> Leselisten </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {$page.url.pathname.startsWith('/readinglists',)  ? 'active' : ''}" href="/readinglists"> Leselisten </a>
+                    <a class="nav-link {$page.url.pathname.startsWith('/rezensionen') ? 'active' : ''}" href="/rezensionen"> Rezensionen </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {$page.url.pathname.startsWith('/readinglists') ? 'active' : ''}" href="/readinglists"> Leselisten </a>
                 </li>
             </ul>
-            <!-- Left links -->
 
-            <!-- Search form -->
-            <img
-                src="/icons/account_circle.svg"
-                alt="Account"
-                class="account-icon"
-            />
+            <i class="bi bi-person-circle account-icon"></i>
+
             <form class="search-form">
-                <input
-                    type="search"
-                    class="search-input"
-                    placeholder="Suchbegriff"
-                    aria-label="Search"
-                />
+                <input type="search" class="search-input" placeholder="Suchbegriff" aria-label="Search" />
                 <button class="search-button" type="submit" aria-label="Search">
-                    <img
-                        src="/icons/suche.svg"
-                        alt="Suche"
-                        class="search-icon"
-                    />
+                    <i class="bi bi-search search-icon"></i>
                 </button>
             </form>
         </div>
-        <!-- Container wrapper -->
     </div>
 </nav>
 
@@ -77,31 +53,45 @@
 
 <style>
     .navbar {
-        z-index: 1030; /* Standardwert für Bootstrap */
+        z-index: 1030;
     }
     .container {
         margin-top: 70px;
-        position: relative; /* Höhe der Navbar (anpassen, falls nötig) */
+        position: relative;
     }
-    .account-icon {
-        width: 35px; /* Neue Größe des Icons */
-        height: 35px;
-        cursor: pointer;
-    }
-    /* Styling für die Suchleiste */
+
     .search-form {
         display: flex;
         align-items: center;
-        background-color: rgba(
-            0,
-            0,
-            0,
-            0.1
-        ); /* Halbtransparenter Hintergrund */
-        border-radius: 25px; /* Abgerundete Ecken */
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 25px;
         padding: 5px 10px;
-        width: 250px; /* Breite der Suchleiste */
+        width: 250px;
         margin-left: 1rem;
+    }
+    .account-icon {
+        font-size: 35px;
+        cursor: pointer;
+        color: black;
+    }
+
+    .search-icon {
+        font-size: 25px;
+        color: black;
+        border: none;
+        outline: none;
+        box-shadow: none;
+    }
+
+    .search-button {
+        border: none;
+        outline: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .search-button:hover .search-icon {
+        filter: brightness(1.2);
     }
 
     .search-input {
@@ -113,30 +103,11 @@
         font-size: 16px;
     }
 
-    .search-button {
-        background: none;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .search-icon {
-        width: 25px; /* Größe des Icons */
-        height: 25px;
-    }
-
-    .search-button:hover .search-icon {
-        filter: brightness(1.2); /* Hellerer Effekt beim Hover */
-    }
-
     .nav-link.active {
-        background-color: black; 
-        color: white; 
-        border-radius: 50px; 
-        font-weight: bold; 
-        padding: 8px 12px; 
+        background-color: black;
+        color: white;
+        border-radius: 50px;
+        font-weight: bold;
+        padding: 8px 12px;
     }
 </style>

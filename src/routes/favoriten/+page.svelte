@@ -1,9 +1,8 @@
 <script>
   import BookCard from "$lib/components/BookCard.svelte";
+  
   let { data } = $props();
-
-   let showFavorite = data.showFavorite;
-
+  let showFavorite = data.showFavorite;
 </script>
 
 <div class="page-content">

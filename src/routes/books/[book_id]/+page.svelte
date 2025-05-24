@@ -6,18 +6,13 @@
   let averageRating = data.averageRating;
   let rezensionen = data.rezensionen;
   let details = data.details;
-  /*let user = data.benutzer;*/
 </script>
 
 <div class="page-content">
   <button class="btn-custom"><a href="/books">Zurück</a></button>
   <div class="detail-container">
     <div class="buch-cover">
-      <img
-        src={details[0].cover || "/img/platzhalter.png"}
-        alt="Cover von {details[0].name}"
-        class="buch-cover-img"
-      />
+      <img src={details[0].cover || "/img/platzhalter.png"} alt="Cover von {details[0].name}" class="buch-cover-img" />
     </div>
     <div class="buch-details">
       <h1 class="buch-title">
@@ -32,32 +27,18 @@
         {#if details[0].isFavorited}
           <form method="POST" action="?/removeFavorite" use:enhance>
             <input type="hidden" name="id" value={details[0]._id} />
-            <button class="favorite-icon-button"
-              ><img
-                src="/icons/favorite.svg"
-                alt="Favoriten-Icon"
-                class="favorite-icon"
-              /></button
-            >
+            <button class="favorite-icon-button" aria-label="Favorit entfernen"><i class="bi bi-heart-fill favorite-icon"></i> </button>
           </form>
         {/if}
         {#if !details[0].isFavorited}
           <form method="POST" action="?/addFavorite" use:enhance>
             <input type="hidden" name="id" value={details[0]._id} />
-            <button class="favorite-icon-button"
-              ><img
-                src="/icons/favorite_border.svg"
-                alt="Favoriten-Icon"
-                class="favorite-icon"
-              /></button
-            >
+            <button class="favorite-icon-button" aria-label="Als Favorit markieren"><i class="bi bi-heart favorite-icon"></i> </button>
           </form>
         {/if}
       </div>
 
-      <p class="buch-beschreibung">
-        {details[0].beschreibung || "Beschreibung nicht vorhanden"}
-      </p>
+      <p class="buch-beschreibung"> {details[0].beschreibung || "Beschreibung nicht vorhanden"}</p>
 
       <!-- Autor und Erscheinungsdatum -->
       <div class="buch-meta">
@@ -67,56 +48,28 @@
         </div>
         <div>
           <p class="meta-label">Erscheinungsdatum</p>
-          <p class="meta-value">
-            {details[0].datum || "Erscheinungsdatum unbekannt"}
-          </p>
+          <p class="meta-value"> {details[0].datum || "Erscheinungsdatum unbekannt"}</p>
         </div>
-        <form method="POST" action="?/delete" class="delete-button-container">
-          <input type="hidden" name="id" value={details[0]._id} />
-          <button class="btn-custom">Buch löschen</button>
-        </form>
-        <button
-          type="button"
-          class="btn-custom"
-          data-bs-toggle="modal"
-          data-bs-target="#deleteModal"
-        >
-          Buch löschen
-        </button>
+        <div class="delete-button-container">
+          <button type="button" class="btn-custom" data-bs-toggle="modal" data-bs-target="#deleteModal"> Buch löschen</button>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Modal -->
-  <div
-  class="modal fade"
-  id="deleteModal"
-  tabindex="-1"
-  aria-labelledby="deleteModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Buch löschen</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <p>Bist du sicher, dass du dieses Buch löschen möchtest?</p>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn-custom"
-          data-bs-dismiss="modal"
-        >
-          Abbrechen
-        </button>
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Buch löschen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Bist du sicher, dass du dieses Buch löschen möchtest?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-custom" data-bs-dismiss="modal">Abbrechen</button>
         <form method="POST" action="?/delete">
           <input type="hidden" name="id" value={details[0]._id} />
           <button type="submit" class="btn-custom">Buch löschen</button>
@@ -126,24 +79,21 @@
   </div>
 </div>
 
-  <h2 class="rezension-title">Rezensionen</h2>
+<!-- Rezensionen -->
+<h2 class="rezension-title">Rezensionen</h2>
   {#if details[0].rezension.length > 0}
     <div class="rezensionen-container">
       {#each details[0].rezension as rez, index}
         <div class="rezension {index > 0 ? 'mit-trennlinie' : ''}">
           <div class="rezension-header">
-            <img
-              src={rez.benutzer[0]?.profilbild || "/img/default-avatar.png"}
-              alt="Profilbild von {rez.benutzer[0]?.name || 'Unbekannt'}"
-              class="profilbild"
-            />
+            <img src={rez.benutzer[0]?.profilbild || "/img/default-avatar.png"} alt="Profilbild von {rez.benutzer[0]?.name || 'Unbekannt'}" class="profilbild" />
             <div>
               <p class="rezension-autor">
                 Rezension von {rez.benutzer[0]?.name || "Unbekannt"}
               </p>
               <p class="rezension-bewertung">
                 {#each Array(rez.bewertung).fill(0) as _}
-                  <span class="stern">★</span>
+                  <i class="bi bi-star-fill"></i>
                 {/each}
               </p>
             </div>
@@ -157,9 +107,7 @@
   {:else}
     <p>Keine Rezensionen vorhanden.</p>
   {/if}
-  <a href={`/books/${details[0]._id}/createRezension`} class="btn-custom"
-    >Rezension hinzufügen</a
-  >
+  <a href={`/books/${details[0]._id}/createRezension`} class="btn-custom">Rezension hinzufügen</a>
 </div>
 
 <style>
@@ -226,7 +174,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-top: 0.5rem; /* Abstand zwischen Titel und User Score */
+    margin-top: 0.5rem; 
   }
 
   .user-score {
@@ -272,7 +220,7 @@
 
   .delete-button-container {
     position: absolute;
-    bottom: 0; /* Positioniere den Button unten */
+    bottom: 0; 
   }
 
   .rezension-title {
@@ -322,8 +270,10 @@
     margin: 0.2rem 0 0;
   }
 
-  .stern {
-    font-size: 1.2rem;
+   .rezension-bewertung i {
+    color: #ffd700; 
+    font-size: 1.2rem; 
+    margin-right: 0.1rem; 
   }
 
   .rezension-text {
@@ -354,5 +304,20 @@
     gap: 1rem;
   }
 
+  .favorite-icon-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
 
+  .favorite-icon {
+    font-size: 1.5rem; 
+    color: white; 
+    transition: transform 0.2s ease;
+  }
+
+  .favorite-icon:hover {
+    transform: scale(1.2); 
+  }
 </style>

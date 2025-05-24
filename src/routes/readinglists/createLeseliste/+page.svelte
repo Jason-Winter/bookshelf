@@ -31,12 +31,7 @@
       <div class="checkbox-list">
         {#each books as book}
           <div class="checkbox-item">
-            <input
-              type="checkbox"
-              id={book.buch_id}
-              value={book.buch_id}
-              onchange={() => toggleBookSelection(book.buch_id)}
-            />
+            <input type="checkbox" id={book.buch_id} value={book.buch_id} onchange={() => toggleBookSelection(book.buch_id)} required />
             <label for={book.buch_id}>{book.name}</label>
           </div>
         {/each}

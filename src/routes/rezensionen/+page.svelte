@@ -1,6 +1,5 @@
 <script>
     let { data } = $props();
-
     let rezensionen = data.rezensionen;
 </script>
 
@@ -11,19 +10,12 @@
             <div class="rezension {index > 0 ? 'mit-trennlinie' : ''}">
                 <div class="rezension-header">
                     <a href={`/books/${rez.book._id}`} class="buch-link">
-                        <img
-                            src={rez.book.cover || "/img/platzhalter.png"}
-                            alt="Cover zu {rez.book.name || 'Unbekannt'}"
-                            class="buch-cover"
-                        />
-                    </a>
+                        <img src={rez.book.cover || "/img/platzhalter.png"} alt="Cover zu {rez.book.name || 'Unbekannt'}" class="buch-cover" /> </a>
                     <div class="rezension-details">
-                        <p class="rezension-buch-titel">
-                            Rezension zu {rez.book.name || "Unbekannt"}
-                        </p>
+                        <p class="rezension-buch-titel"> Rezension zu {rez.book.name || "Unbekannt"} </p>
                         <p class="rezension-bewertung">
                             {#each Array(rez.bewertung).fill(0) as _}
-                                <span class="stern">★</span>
+                                 <i class="bi bi-star-fill"></i>
                             {/each}
                         </p>
                         <div class="rezension-text">
@@ -52,9 +44,9 @@
     }
 
     .rezension-header {
-        display: flex; /* Bild und Text nebeneinander */
-        align-items: flex-start; /* Text oben ausrichten */
-        gap: 1rem; /* Abstand zwischen Bild und Text */
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
         margin-bottom: 1rem;
     }
 
@@ -68,19 +60,22 @@
         margin: 0.2rem 0 0;
     }
 
-    .stern {
+    .rezension-bewertung i {
+        color: #ffd700;
         font-size: 1.2rem;
+        margin-right: 0.1rem;
     }
 
     .rezension-text {
         margin: 1rem 0;
         line-height: 1.6;
     }
+
     .buch-cover {
         width: 150px;
         height: 200px;
         border-radius: 4px;
         object-fit: cover;
-        flex-shrink: 0; /* Verhindert, dass das Bild skaliert wird */
+        flex-shrink: 0;
     }
 </style>

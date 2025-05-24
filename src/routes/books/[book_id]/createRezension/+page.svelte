@@ -1,8 +1,6 @@
 <script>
   let { form, data } = $props();
-
   let book = data.book;
-
 </script>
 
 <div class="page-content">

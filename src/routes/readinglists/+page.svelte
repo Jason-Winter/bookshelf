@@ -1,6 +1,5 @@
 <script>
     let { data } = $props();
-
     let readingLists = data.readingLists;
 </script>
 
@@ -11,18 +10,10 @@
             <div class="leseliste {index > 0 ? 'mit-trennlinie' : ''}">
                 <div class="leseliste-header">
                     <div class="buch-link">
-                        <img
-                            src={list.benutzer.profilbild ||
-                                "/img/default-avatar.png"}
-                            alt="Profilbild von {list.benutzer.name ||
-                                'Unbekannt'}"
-                            class="profilbild"
-                        />
+                        <img src={list.benutzer.profilbild || "/img/default-avatar.png"} alt="Profilbild von {list.benutzer.name || 'Unbekannt'}" class="profilbild" />
                     </div>
                     <div class="leseliste-details">
-                        <a href={`/readinglists/${list._id}`} class="leseliste-buch-titel">
-                            {list.name || "Unbekannt"}
-                        </a>
+                        <a href={`/readinglists/${list._id}`} class="leseliste-buch-titel"> {list.name || "Unbekannt"} </a>
                         <div class="leseliste-text">
                             <p>{list.beschreibung}</p>
                         </div>
@@ -39,7 +30,7 @@
 
 
 <style>
-    a{
+    a {
         color: white;
     }
     .leseliste {
@@ -55,9 +46,9 @@
     }
 
     .leseliste-header {
-        display: flex; /* Bild und Text nebeneinander */
-        align-items: flex-start; /* Text oben ausrichten */
-        gap: 1rem; /* Abstand zwischen Bild und Text */
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
         margin-bottom: 0.5rem;
     }
 
@@ -73,10 +64,10 @@
         margin-top: 0.4rem;
     }
 
- .profilbild {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+    .profilbild {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
 </style>
