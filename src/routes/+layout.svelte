@@ -1,7 +1,7 @@
 <script>
     import "./styles.css";
     import { page } from "$app/stores";
-    
+
     let { children } = $props();
 </script>
 
@@ -23,9 +23,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {$page.url.pathname.startsWith('/favoriten') ? 'active' : ''}" href="/favoriten"> Favoriten </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {$page.url.pathname.startsWith('/readinglists') ? 'active' : ''}" href="/readinglists"> Leselisten </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {$page.url.pathname.startsWith('/rezensionen') ? 'active' : ''}" href="/rezensionen"> Rezensionen </a>
