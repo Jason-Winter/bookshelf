@@ -8,9 +8,8 @@
 </script>
 
 <div class="page-content">
-  <h1>Leselisten</h1>
+  <h1>{readingList.name}</h1>
 
-  
   <div class="book-list">
     {#each readingList.buch_ids as buch_id}
       {#each books.filter(book => book.buch_id === buch_id) as book}

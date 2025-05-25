@@ -42,12 +42,7 @@
     <div class="detail-container">
         <div class="buch-cover">
             <a href={`/books/${book._id}`}>
-                <img
-                    src={book.cover || "/img/platzhalter.png"}
-                    alt="Cover von {book.name}"
-                    class="buch-cover-img"
-                /></a
-            >
+                <img src={book.cover || "/img/platzhalter.png"} alt="Cover von {book.name}" class="buch-cover-img"/></a>
         </div>
         <div class="buch-details">
             <h3 class="buch-title">
@@ -75,13 +70,13 @@
 
 <style>
     .intro-text {
-        color: #ccc; /* Grauer Text */
+        color: #ccc; 
         margin-top: 0.5rem;
     }
     .section-title {
         font-size: 2rem;
         margin-top: 3rem;
-        color: white; /* Weißer Titel */
+        color: white; 
     }
     .stats-grid {
         display: grid;
@@ -91,8 +86,7 @@
     }
 
     .stat-card {
-        background: white; /* Schwarzer Hintergrund */
-        border: 2px solid #fff; /* Weißer Rahmen */
+        background: white; 
         border-radius: 12px;
         padding: 1.5rem;
         text-align: center;
@@ -105,24 +99,24 @@
 
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 10px rgba(255, 255, 255, 0.2); /* Weißer Schatten beim Hover */
+        box-shadow: 0 6px 10px rgba(255, 255, 255, 0.2); 
     }
 
     .stat-icon {
         font-size: 3rem;
-        color: black; /* Weiße Icons */
+        color: black; 
         margin-bottom: 0.5rem;
     }
 
     .stat-value {
         font-size: 2rem;
         font-weight: bold;
-        color: black; /* Weißer Text */
+        color: black; 
     }
 
     .stat-label {
         font-size: 1rem;
-        color: #525151; /* Grauer Text für Labels */
+        color: #525151; 
         margin-top: 0.5rem;
     }
 

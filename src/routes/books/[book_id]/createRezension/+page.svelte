@@ -23,7 +23,10 @@
   <button type="submit" class="btn-custom">Rezension hinzufügen</button>
 </form>
 
-{#if form?.success}
+{#if form?.success}  
   <p>Rezension erstellt</p>
+{/if}
+{#if form?.error}  
+  <p>{form.error}</p>
 {/if}
 </div>

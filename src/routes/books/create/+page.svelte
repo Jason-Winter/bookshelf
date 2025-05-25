@@ -29,7 +29,10 @@
   <button type="submit" class="btn-custom">Buch hinzufügen</button>
 </form>
 
-{#if form?.success}
+{#if form?.success}  
   <p>Buch erstellt</p>
+{/if}
+{#if form?.error}  
+  <p>{form.error}</p>
 {/if}
 </div>

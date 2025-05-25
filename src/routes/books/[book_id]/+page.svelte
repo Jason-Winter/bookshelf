@@ -15,19 +15,18 @@
         {details[0].name} <span class="buch-jahr"></span>
       </h1>
 
-      <!-- User Score und Favoriten-Button nebeneinander -->
       <div class="user-score-container">
         <div class="user-score">{averageRating}</div>
         <p class="user-score-label">Benutzer Bewertung</p>
 
         {#if details[0].isFavorited}
-          <form method="POST" action="?/removeFavorite" use:enhance>
+          <form method="POST" action="?/removeFavorite">
             <input type="hidden" name="id" value={details[0]._id} />
             <button class="favorite-icon-button" aria-label="Favorit entfernen"><i class="bi bi-heart-fill favorite-icon"></i> </button>
           </form>
         {/if}
         {#if !details[0].isFavorited}
-          <form method="POST" action="?/addFavorite" use:enhance>
+          <form method="POST" action="?/addFavorite">
             <input type="hidden" name="id" value={details[0]._id} />
             <button class="favorite-icon-button" aria-label="Als Favorit markieren"><i class="bi bi-heart favorite-icon"></i> </button>
           </form>
@@ -36,7 +35,6 @@
 
       <p class="buch-beschreibung"> {details[0].beschreibung || "Beschreibung nicht vorhanden"}</p>
 
-      <!-- Autor und Erscheinungsdatum -->
       <div class="buch-meta">
         <div>
           <p class="meta-label">Autor</p>
@@ -53,7 +51,6 @@
     </div>
   </div>
 
-  <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -75,7 +72,6 @@
   </div>
 </div>
 
-<!-- Rezensionen -->
 <h2 class="rezension-title">Rezensionen</h2>
   {#if details[0].rezension.length > 0}
     <div class="rezensionen-container">
@@ -276,7 +272,6 @@
     margin: 1rem 0;
     line-height: 1.6;
   }
-
 
   .modal-dialog{
     background-color: black;

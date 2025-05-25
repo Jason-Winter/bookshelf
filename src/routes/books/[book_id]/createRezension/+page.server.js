@@ -18,6 +18,14 @@ export const actions = {
       text: data.get("text"),
       buch_id: data.get("buch_id"),
     };
+
+    if (rezension.bewertung < 1 || rezension.bewertung > 5) {
+      return { success: false, error: "Fehler in der Validierung: Bewertung muss zwischen 1 und 5 liegen." };
+    }
+    if (rezension.text.length < 8 || rezension.text.length > 500) {
+      return { success: false, error: "Fehler in der Validierung: Rezension muss zwischen 8 und 500 Zeichen lang sein." };
+    }
+
     await db.createRezension(rezension);
     return { success: true };
   },
