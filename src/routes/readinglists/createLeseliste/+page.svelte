@@ -16,7 +16,7 @@
 
 <div class="page-content">
 <button class="btn-custom"><a href="/readinglists">Zurück</a></button>
-<h1>Neues Leseliste erstellen</h1>
+<h1>Neue Leseliste erstellen</h1>
 <form method="POST" action="?/create">
   <div class="mb-3">
     <label for="" class="form-label">Name</label>
