@@ -1,10 +1,6 @@
 <script>
-  import { json } from "@sveltejs/kit";
-
   let { data } = $props();
-  let book = data.book;
   let averageRating = data.averageRating;
-  let rezensionen = data.rezensionen;
   let details = data.details;
 </script>
 
@@ -70,7 +66,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-custom" data-bs-dismiss="modal">Abbrechen</button>
-        <form method="POST" action="?/delete">
+        <form method="POST" action="?/delete" use:enhance>
           <input type="hidden" name="id" value={details[0]._id} />
           <button type="submit" class="btn-custom">Buch löschen</button>
         </form>

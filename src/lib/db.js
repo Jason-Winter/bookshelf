@@ -8,18 +8,11 @@ const client = new MongoClient(DB_URI);
 await client.connect();
 const db = client.db("BookShelf"); // select database
 
-//////////////////////////////////////////
-// Movies
-//////////////////////////////////////////
-
 // Get all books
 async function getBooks() {
   let books = [];
   try {
     const collection = db.collection("books");
-
-    // You can specify a query/filter here
-    // See https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/query-document/
     const query = {};
 
     // Get all objects that match the query
@@ -34,7 +27,7 @@ async function getBooks() {
   return books;
 }
 
-// Get book by id
+
 async function getBook(id) {
   let book = null;
   try {
@@ -55,6 +48,7 @@ async function getBook(id) {
   return book;
 }
 
+
 // Funktion zum Formatieren des Datums
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -63,6 +57,7 @@ function formatDate(dateString) {
   const year = date.getFullYear();
   return `${day}.${month}.${year}`;
 }
+
 
 async function createBook(book) {
   book.cover = "/img/platzhalter.png"; // default cover
@@ -127,6 +122,37 @@ async function deleteBook(id) {
     console.log(error.message);
   }
   return null;
+}
+
+
+async function getDailyRandomBook() {
+  try {
+    const collection = db.collection("books");
+
+    // Hole alle Bücher aus der Datenbank
+    const books = await collection.find({}).toArray();
+
+    if (books.length === 0) {
+      console.log("Keine Bücher in der Datenbank gefunden.");
+      return null;
+    }
+
+    // Verwende das aktuelle Datum, um einen Index zu berechnen
+    const today = new Date();
+    const dayOfYear = Math.floor(
+      (today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
+    );
+    const randomIndex = dayOfYear % books.length;
+
+    // Wähle das Buch basierend auf dem berechneten Index
+    const randomBook = books[randomIndex];
+    randomBook._id = randomBook._id.toString(); // Konvertiere ObjectId zu String
+
+    return randomBook;
+  } catch (error) {
+    console.log("Fehler beim Abrufen des täglichen zufälligen Buchs:", error.message);
+    return null;
+  }
 }
 
 
@@ -364,6 +390,22 @@ async function createReadingList(readingList) {
   return null;
 }
 
+async function getCounts() {
+  try {
+    const booksCount = await db.collection("books").countDocuments();
+    const readingListsCount = await db.collection("leseliste").countDocuments();
+    const reviewsCount = await db.collection("rezension").countDocuments();
+
+    return {
+      books: booksCount,
+      readingLists: readingListsCount,
+      reviews: reviewsCount
+    };
+  } catch (error) {
+    console.log("Fehler beim Abrufen der Zählwerte:", error.message);
+    return null;
+  }
+}
 
 // export all functions so that they can be used in other files
 export default {
@@ -380,5 +422,7 @@ export default {
   createRezension,
   createReadingList,
   getReadinglist,
-  getAllReadinglists
+  getAllReadinglists,
+  getDailyRandomBook,
+  getCounts
 };

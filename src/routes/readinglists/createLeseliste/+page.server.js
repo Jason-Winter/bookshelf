@@ -10,12 +10,13 @@ export const actions = {
   create: async ({ request }) => {
     const data = await request.formData();
     let buecher = data.get("buecher");
+    console.log("Bücher:", buecher);
 
     // Überprüfe, ob der Wert von "buecher" gültig ist
     let buch_ids = [];
     if (buecher) {
       try {
-        buch_ids = JSON.parse(buecher);
+        buch_ids = buecher.split(",");
       } catch (error) {
         console.error("Fehler beim Parsen von buecher:", error);
       }

@@ -4,6 +4,7 @@
 
   let { data } = $props();
   let readingList = data.readingList;
+  let books = data.books;
 
 </script>
 
@@ -12,10 +13,10 @@
 
   
   <div class="book-list">
-    {#each data.books as book}
-    {#if readingList.some(item => item.buch_id === book.buch_id)}
-      <BookCard {book} />
-    {/if}
+    {#each readingList.buch_ids as buch_id}
+      {#each books.filter(book => book.buch_id === buch_id) as book}
+        <BookCard {book} />
+      {/each}
     {/each}
   </div>
 </div>
