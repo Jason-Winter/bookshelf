@@ -1,6 +1,5 @@
 <script>
-    import BookCard from "$lib/components/BookCard.svelte";
-    import { json } from '@sveltejs/kit';
+  import BookCard from "$lib/components/BookCard.svelte";
 
   let { data } = $props();
   let readingList = data.readingList;
